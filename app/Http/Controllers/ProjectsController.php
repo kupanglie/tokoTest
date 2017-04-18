@@ -120,8 +120,13 @@ class ProjectsController extends Controller
 							->get();
 
 		$total_estimated_work_qty = 0;
+		$total_estimated_work_qty_run = 0;
 		foreach($estimated_works as $estimated_work) {
-			$total_estimated_work_qty = $total_estimated_work_qty + $estimated_work->qty;
+			if(strpos($estimated_work->name, 'drop celling') !== false) {
+				$total_estimated_work_qty_run = $total_estimated_work_qty_run + $estimated_work->qty;
+			} else {
+				$total_estimated_work_qty = $total_estimated_work_qty + $estimated_work->qty;
+			}
 		}
 
 		$real_works = DB::table('work_mappings')
@@ -131,8 +136,13 @@ class ProjectsController extends Controller
 							->get();
 
 		$total_real_work_qty = 0;
+		$total_real_work_qty_run = 0;
 		foreach($real_works as $real_work) {
-			$total_real_work_qty = $total_real_work_qty + $real_work->qty;
+			if(strpos($real_work->name, 'drop celling') !== false) {
+				$total_real_work_qty_run = $total_real_work_qty_run + $real_work->qty;
+			} else {
+				$total_real_work_qty = $total_real_work_qty + $real_work->qty;
+			}
 		}
 
 		$items_out = DB::table('item_outs')
@@ -180,7 +190,7 @@ class ProjectsController extends Controller
 			}
 		}
 		// dd($real_works);
-        return view('project.show', compact('project', 'estimated_works', 'real_works', 'items_out', 'items_in', 'total_estimated_work_qty', 'total_real_work_qty', 'total_items_used', 'items_used'));
+        return view('project.show', compact('project', 'estimated_works', 'real_works', 'items_out', 'items_in', 'total_estimated_work_qty', 'total_estimated_work_qty_run', 'total_real_work_qty', 'total_real_work_qty_run', 'total_items_used', 'items_used'));
     }
 
     /**

@@ -23,26 +23,34 @@ Bravo Bangunan
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Length</label>
 						<div class="col-lg-10">
-							<input type="Number" step="any" class="form-control" name="length" value="{{ $item_mapping->actual_length }}" readonly>
+							<div class="input-group">
+								<input type="Number" step="any" class="form-control" name="length" value="{{ $item_mapping->actual_length }}" readonly><span class="input-group-addon" id="estimated_qty">m</span>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Thick</label>
 						<div class="col-lg-10">
-							<input type="text" name="thick" class="form-control" value="{{ $item_mapping->thick }}" readonly>
+							<div class="input-group">
+								<input type="text" name="thick" class="form-control" value="{{ $item_mapping->thick }}" readonly><span class="input-group-addon" id="estimated_qty">cm</span>
+							</div>
 						</div>
 					</div>
 					<input type="hidden" name="stock_id" value="{{ $item_mapping->stock_id }}">
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Quantity</label>
 						<div class="col-lg-10">
-							<input type="Number" class="form-control" name="qty" value="{{ $item_mapping->qty }}" readonly>
+							<div class="input-group">
+								<input type="Number" class="form-control" name="qty" value="{{ $item_mapping->qty }}" readonly><span class="input-group-addon" id="estimated_qty">lembar</span>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Actual Quantity</label>
 						<div class="col-lg-10">
-							<input type="Number" class="form-control" name="actual_qty">
+							<div class="input-group">
+								<input type="Number" class="form-control" name="actual_qty"><span class="input-group-addon" id="estimated_qty">lembar</span>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">

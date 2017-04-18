@@ -81,7 +81,6 @@ class ItemsInController extends Controller
 			$newStock->save();
 
 			$newItemMappings = new item_mapping();
-			$newItemOut->project_id = $request->project_id;
 			$newItemMappings->item_id = $request->item_id;
 			$newItemMappings->stock_id = $newStock->id;
 			$newItemMappings->save();

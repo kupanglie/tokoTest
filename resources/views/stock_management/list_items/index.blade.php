@@ -52,8 +52,8 @@ Bravo Bangunan
 									@endif
 								</td>
 								<td>{{ $item_mapping->qty }}</td>
-								<td id="tdPrice{{ $item_mapping->item_mapping_id }}" style="width:20%">
-									<div id="divPrice{{ $item_mapping->item_mapping_id }}">
+								<td id="tdPrice{{ $item_mapping->stock_id }}" style="width:20%">
+									<div id="divPrice{{ $item_mapping->stock_id }}">
 										@if($item_mapping->sell_price == NULL)
 											<button type="button" class="btn btn-primary btn-xs" onclick="addPrice({{ $item_mapping->stock_id }})">Please Add Price</button>
 										@else

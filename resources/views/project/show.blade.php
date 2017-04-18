@@ -30,6 +30,7 @@ Bravo Bangunan
 										<div class="col col-md-6">
 											<table class="table table-bordered">
 												<h4>Total Estimated Work Quantity : {{ $total_estimated_work_qty }} m<sup>2</sup></h4>
+												<h4>Total Estimated Work Quantity Run : {{ $total_estimated_work_qty_run }} m<sup>1</sup></h4>
 												<thead>
 													<tr>
 														<th colspan="2">Estimated Works</th>
@@ -39,7 +40,13 @@ Bravo Bangunan
 													@foreach($estimated_works as $estimated_work)
 													<tr>
 														<td>{{ $estimated_work->name }}</td>
-														<td style="width:15%; text-align:center">{{ $estimated_work->qty }} m<sup>2</sup></td>
+														<td style="width:15%; text-align:center">
+															@if(strpos($estimated_work->name, 'drop celling') !== false)
+																{{ $estimated_work->qty }} m<sup>1</sup>
+															@else
+																{{ $estimated_work->qty }} m<sup>2</sup>
+															@endif	
+														</td>
 													</tr>
 													@endforeach
 												</tbody>
@@ -48,6 +55,7 @@ Bravo Bangunan
 										<div class="col col-md-6">
 											<table class="table table-bordered">
 												<h4>Total Real Work Quantity : {{ $total_real_work_qty }} m<sup>2</sup></h4>
+												<h4>Total Real Work Quantity Run : {{ $total_real_work_qty_run }} m<sup>1</sup></h4>
 												<thead>
 													<tr>
 														<th colspan="2">Real Works</th>
@@ -57,7 +65,13 @@ Bravo Bangunan
 													@foreach($real_works as $real_work)
 													<tr>
 														<td>{{ $real_work->name }}</td>
-														<td style="width:15%; text-align:center">{{ $real_work->qty }} m<sup>2</sup></td>
+														<td style="width:15%; text-align:center">
+															@if(strpos($real_work->name, 'drop celling') !== false)
+																{{ $real_work->qty }} m<sup>1</sup>
+															@else
+																{{ $real_work->qty }} m<sup>2</sup>
+															@endif	
+														</td>
 													</tr>
 													@endforeach
 												</tbody>

@@ -106,7 +106,7 @@ $(".addMoreEstimated").on('click',function(){
 	'<label class="col-lg-2 control-label">Quantity</label>'+
 	'<div class="col-lg-10">'+
 	'<div class="input-group">'+
-	'<input type="Number" step="any" class="form-control" name="estimated_qty[]"><span class="input-group-addon" id="estimated_qty">m<sup>2</sup></span>'+
+	'<input type="Number" step="any" class="form-control" name="estimated_qty[]"><span class="input-group-addon" id="estimated_qty">m<sup>2</sup> or m<sup>1</sup></span>'+
 	'</div>'+
 	'</div>'+
 	'</div>'+

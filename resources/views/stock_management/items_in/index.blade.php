@@ -36,7 +36,13 @@ Bravo Bangunan
 								<td>{{ $itemIn->thick }}cm</td>
 								<td>{{ $itemIn->quantity }}</td>
 								<td>{{ $itemIn->date }}</td>
-								<td>{{ $itemIn->no_preorder }}</td>
+								<td>
+									@if(isset($itemIn->no_preorder))
+										{{ $itemIn->no_preorder }}
+									@else
+										-
+									@endif	
+								</td>
 							</tr>
 						@endforeach
 					</tbody>
@@ -47,7 +53,7 @@ Bravo Bangunan
 									<button type="button" class="btn btn-primary">Add Incoming Item</button>
 								</a>
 							</td>
-							<td colspan="6">
+							<td colspan="7">
 								<ul class="pagination pull-right"></ul>
 							</td>
 						</tr>
