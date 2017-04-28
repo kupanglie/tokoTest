@@ -182,7 +182,7 @@ class ProjectsController extends Controller
 		foreach($items_out as $item_out) {
 			foreach($items_in as $item_in) {
 				if($item_out->item_id == $item_in->item_id) {
-					$item_out->item_out_qty = $item_out->item_out_qty - $item_in->item_in_qty;
+					$item_out->item_qty = $item_out->item_out_qty - $item_in->item_in_qty;
 					array_push($items_used, $item_out);
 				} else {
 					array_push($items_used, $item_out);

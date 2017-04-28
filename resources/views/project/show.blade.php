@@ -147,18 +147,18 @@ Bravo Bangunan
 													<td>{{ $item_used->name }}</td>
 													<td>
 														@if(substr($item_used->name, 0, 3) == 'UP-' || substr($item_used->name, 0, 3) == 'LU-' || substr($item_used->name, 0, 3) == 'LK-' || substr($item_used->name, 0, 3) == 'LH-' || substr($item_used->name, 0, 3) == 'LJ-')
-															{{ $item_used->item_out_qty * 5.8 }}
+															{{ $item_used->item_qty * 5.8 }}
 														@else
-															{{ $item_used->item_out_qty }}
+															{{ $item_used->item_qty }}
 														@endif
 													</td>
 													<td>meter</td>
 													<td>Rp {{ $item_used->buy_price }}</td>
 													<td>
 														@if(substr($item_used->name, 0, 3) == 'UP-' || substr($item_used->name, 0, 3) == 'LU-' || substr($item_used->name, 0, 3) == 'LK-' || substr($item_used->name, 0, 3) == 'LH-' || substr($item_used->name, 0, 3) == 'LJ-')
-															Rp {{ ($item_used->item_out_qty * 5.8) * ($item_used->buy_price/5.8) }}
+															Rp {{ ($item_used->item_qty * 5.8) * ($item_used->buy_price/5.8) }}
 														@else
-															Rp {{ $item_used->item_out_qty * $item_used->buy_price }}
+															Rp {{ $item_used->item_qty * $item_used->buy_price }}
 														@endif
 													</td>
 												</tr>
