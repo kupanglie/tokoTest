@@ -304,4 +304,9 @@ class ProjectsController extends Controller
     {
         //
     }
+
+    public function postUpdateSupportItem(Request $request)
+    {
+    	dd($request);
+    }
 }

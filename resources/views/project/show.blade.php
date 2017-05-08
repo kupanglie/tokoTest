@@ -249,8 +249,13 @@ Bravo Bangunan
 @section('custom-js')
 <script>
 	function countTotalSupportPrice(id) {
-		var totalPrice = $('#qty'+id).val() * $('#price'+id).val();
-		$('#total_price'+id).text(totalPrice);
+		var totalPrice = $('#support_qty'+id).val() * $('#support_price'+id).val();
+		$('#support_total_price'+id).text('Rp '+totalPrice);
+	}
+
+	function countTotalExtraPrice(id) {
+		var totalPrice = $('#extra_qty'+id).val() * $('#extra_price'+id).val();
+		$('#extra_total_price'+id).text('Rp '+totalPrice);
 	}
 
 	$(".addSupportItem").on('click',function(){
@@ -259,16 +264,24 @@ Bravo Bangunan
 		var data = 
 		'<tr class="item_estimated_row'+row_cntr_support+'">'+
 		'<td></td>'+
-		'<td>'+
-		'<input type="text" placeholder="Support Item Name" name="support_item_name[]"></input>'+
+		'<td colspan="4">'+
+		'{{ Form::open(["route" => ["update-support-item"], "method"=> "POST", "enctype"=> "multipart/form-data"]) }}'+
+		'<div class="col-md-2">'+
+		'<input type="text" placeholder="Support Item Name" name="support_item_name"></input>'+
+		'</div>'+
+		'<div class="col-md-2">'+
+		'<input type="number" id="support_qty'+row_cntr_support+'" placeholder="Total Item" name="support_item_qty"></input>'+
+		'</div>'+
+		'<div class="col-md-2">'+
+		'<input type="number" id="support_price'+row_cntr_support+'" placeholder="Item Price" name="support_item_price" onchange="countTotalSupportPrice('+row_cntr_support+')"></input>'+
+		'</div>'+
+		'<div class="col-md-3" id="support_total_price'+row_cntr_support+'">'+
+		'</div>'+
+		'<div class="col-md-3 pull-right">'+
+		'<button type="submit">Submit</button>'+
+		'</div>'+
+		'{{ Form::close() }}'+
 		'</td>'+
-		'<td>'+
-		'<input type="number" id="qty'+row_cntr_support+'" placeholder="Total Item" name="support_item_qty[]"></input>'+
-		'</td>'+
-		'<td>'+
-		'<input type="number" id="price'+row_cntr_support+'" placeholder="Item Price" name="support_item_price[]" onchange="countTotalSupportPrice('+row_cntr_support+')"></input>'+
-		'</td>'+
-		'<td id="total_price'+row_cntr_support+'"></td>'+
 		'</tr>';
 		$('.support_items').after(data);
 		$("#row_count_support").val(row_cntr_support);
@@ -293,12 +306,18 @@ Bravo Bangunan
 		'<input type="text" placeholder="Extra Cost Name" name="extra_cost_name[]"></input>'+
 		'</td>'+
 		'<td>'+
-		'<input type="number" id="qty'+row_cntr_extra+'" placeholder="Total Item" name="extra_cost_qty[]"></input>'+
+		'<input type="number" id="extra_qty'+row_cntr_extra+'" placeholder="Total Item" name="extra_cost_qty[]"></input>'+
 		'</td>'+
 		'<td>'+
-		'<input type="number" id="price'+row_cntr_extra+'" placeholder="Item Price" name="extra_cost_price[]" onchange="countTotalPrice('+row_cntr_extra+')"></input>'+
+		'<input type="number" id="extra_price'+row_cntr_extra+'" placeholder="Item Price" name="extra_cost_price[]" onchange="countTotalExtraPrice('+row_cntr_extra+')"></input>'+
 		'</td>'+
-		'<td id="total_price'+row_cntr_extra+'"></td>'+
+		'<td>'+
+		'<div class="col col-md-6" id="extra_total_price'+row_cntr_extra+'">'+
+		'</div>'+
+		'<div class="col col-md-6 pull-right">'+
+		// '<button type="submit">Submit</button>'+
+		'</div>'+
+		'</td>'+
 		'</tr>';
 		$('.extra_cost').after(data);
 		$("#row_count_extra").val(row_cntr_extra);

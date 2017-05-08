@@ -22,6 +22,7 @@ Route::get('/getQuantity', 'ItemsOutController@getQuantity');
 
 //Project
 Route::resource('projects', 'ProjectsController');
+Route::post('update-support-item', 'ProjectsController@postUpdateSupportItem')->name('update-support-item');
 
 
 //Stock Management
