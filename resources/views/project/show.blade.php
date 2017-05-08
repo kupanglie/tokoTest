@@ -127,7 +127,7 @@ Bravo Bangunan
 												<tr>
 													<th>No</th>
 													<th>Information</th>
-													<th colspan="2">Qty</th>
+													<th>Qty</th>
 													<th>Price</th>
 													<th>Total</th>
 												</tr>
@@ -137,7 +137,7 @@ Bravo Bangunan
 													<td style="width:10px; text-align:center;">
 														1
 													</td>
-													<td colspan="5">
+													<td colspan="4">
 														Items
 													</td>
 												</tr>
@@ -151,8 +151,8 @@ Bravo Bangunan
 														@else
 															{{ $item_used->item_qty }}
 														@endif
+														meter
 													</td>
-													<td>meter</td>
 													<td>Rp {{ $item_used->buy_price }}</td>
 													<td>
 														@if(substr($item_used->name, 0, 3) == 'UP-' || substr($item_used->name, 0, 3) == 'LU-' || substr($item_used->name, 0, 3) == 'LK-' || substr($item_used->name, 0, 3) == 'LH-' || substr($item_used->name, 0, 3) == 'LJ-')
@@ -167,7 +167,7 @@ Bravo Bangunan
 													<td style="width:10px; text-align:center;">
 														2
 													</td>
-													<td colspan="5">
+													<td colspan="4">
 														Work Cost
 													</td>
 												</tr>
@@ -177,14 +177,52 @@ Bravo Bangunan
 														<td>{{ $real_work->name }}</td>
 														<td>
 															{{ $real_work->qty }}
+															m<sup>2</sup>
 														</td>
-														<td>m<sup>2</sup></td>
 														<td>Rp {{ $real_work->price }}</td>
 														<td>
 															Rp {{ $real_work->qty * $real_work->price }}
 														</td>
 													</tr>
 												@endforeach
+												<tr class="support_items">
+													<td style="width:10px; text-align:center;">
+														3
+													</td>
+													<td colspan="5">
+														Support Item
+													</td>
+												</tr>
+												<tr>
+													<td></td>
+													<td colspan="4">
+														<a href="#">
+															<div class="addSupportItem">
+																<span class="fa fa-plus"></span> Add Support Items
+															</div>
+														</a>
+													</td>
+												</tr>
+												<input type="hidden" name="row_count_support" id="row_count_support" value="0">
+												<tr class="extra_cost">
+													<td style="width:10px; text-align:center;">
+														4
+													</td>
+													<td colspan="5">
+														Extra Cost
+													</td>
+												</tr>
+												<tr>
+													<td></td>
+													<td colspan="4">
+														<a href="#">
+															<div class="addExtraCost">
+																<span class="fa fa-plus"></span> Add Extra Items
+															</div>
+														</a>
+													</td>
+												</tr>
+												<input type="hidden" name="row_count_extra" id="row_count_extra" value="0">
 											</tbody>
 										</table>
 									</div>
@@ -207,3 +245,72 @@ Bravo Bangunan
 	</div>
 </div>
 @endsection
+
+@section('custom-js')
+<script>
+	function countTotalSupportPrice(id) {
+		var totalPrice = $('#qty'+id).val() * $('#price'+id).val();
+		$('#total_price'+id).text(totalPrice);
+	}
+
+	$(".addSupportItem").on('click',function(){
+		var row_cntr_support = $("#row_count_support").val();
+		row_cntr_support = parseInt(row_cntr_support) + 1;
+		var data = 
+		'<tr class="item_estimated_row'+row_cntr_support+'">'+
+		'<td></td>'+
+		'<td>'+
+		'<input type="text" placeholder="Support Item Name" name="support_item_name[]"></input>'+
+		'</td>'+
+		'<td>'+
+		'<input type="number" id="qty'+row_cntr_support+'" placeholder="Total Item" name="support_item_qty[]"></input>'+
+		'</td>'+
+		'<td>'+
+		'<input type="number" id="price'+row_cntr_support+'" placeholder="Item Price" name="support_item_price[]" onchange="countTotalSupportPrice('+row_cntr_support+')"></input>'+
+		'</td>'+
+		'<td id="total_price'+row_cntr_support+'"></td>'+
+		'</tr>';
+		$('.support_items').after(data);
+		$("#row_count_support").val(row_cntr_support);
+	});
+
+	function deleteRowEstimated(ar)
+	{
+		var ttt = ar;
+		$(".item_estimated_row"+ttt+"").remove(".item_estimated_row"+ttt+"");
+		var i=Number($('#row_count_estimated').val());
+		i=i-1;
+		$('#row_count_estimated').val(i);
+	}
+
+	$(".addExtraCost").on('click',function(){
+		var row_cntr_extra = $("#row_count_extra").val();
+		row_cntr_extra = parseInt(row_cntr_extra) + 1;
+		var data = 
+		'<tr class="item_estimated_row'+row_cntr_extra+'">'+
+		'<td></td>'+
+		'<td>'+
+		'<input type="text" placeholder="Extra Cost Name" name="extra_cost_name[]"></input>'+
+		'</td>'+
+		'<td>'+
+		'<input type="number" id="qty'+row_cntr_extra+'" placeholder="Total Item" name="extra_cost_qty[]"></input>'+
+		'</td>'+
+		'<td>'+
+		'<input type="number" id="price'+row_cntr_extra+'" placeholder="Item Price" name="extra_cost_price[]" onchange="countTotalPrice('+row_cntr_extra+')"></input>'+
+		'</td>'+
+		'<td id="total_price'+row_cntr_extra+'"></td>'+
+		'</tr>';
+		$('.extra_cost').after(data);
+		$("#row_count_extra").val(row_cntr_extra);
+	});
+
+	function deleteRowEstimated(ar)
+	{
+		var ttt = ar;
+		$(".item_estimated_row"+ttt+"").remove(".item_estimated_row"+ttt+"");
+		var i=Number($('#row_count_estimated').val());
+		i=i-1;
+		$('#row_count_estimated').val(i);
+	}
+</script>
+@endsection()

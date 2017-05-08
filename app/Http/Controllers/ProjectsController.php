@@ -177,19 +177,16 @@ class ProjectsController extends Controller
 
 		$total_items_used = $total_items_out - $total_items_in;
 
-		// dd($items_out, $items_in);
 		$items_used = [];
 		foreach($items_out as $item_out) {
 			foreach($items_in as $item_in) {
 				if($item_out->item_id == $item_in->item_id) {
 					$item_out->item_qty = $item_out->item_out_qty - $item_in->item_in_qty;
 					array_push($items_used, $item_out);
-				} else {
-					array_push($items_used, $item_out);
 				}
 			}
 		}
-		// dd($real_works);
+		// dd($items_out, $items_in, $items_used);
         return view('project.show', compact('project', 'estimated_works', 'real_works', 'items_out', 'items_in', 'total_estimated_work_qty', 'total_estimated_work_qty_run', 'total_real_work_qty', 'total_real_work_qty_run', 'total_items_used', 'items_used'));
     }
 

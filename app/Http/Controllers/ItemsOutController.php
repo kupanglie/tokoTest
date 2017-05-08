@@ -122,11 +122,12 @@ class ItemsOutController extends Controller
 			->where('stocks.length_id', '=', $request->length_id)
 			->where('stocks.actual_length', '=', $request->length)
 			->where('stocks.thick_id', '=', $request->thick_id)
+			->select('items.*', 'stocks.*', 'lengths.*', 'thicks.*', 'item_mappings.*', 'item_mappings.id as item_mapping_id')
 			->first();
-
+			
 			$newItemOut = new item_out();
 			$newItemOut->project_id = $request->project_id;
-			$newItemOut->item_mapping_id = $item_mapping->id;
+			$newItemOut->item_mapping_id = $item_mapping->item_mapping_id;
 			$newItemOut->qty = $request->qty;
 			if($request->information != NULL) {
 				$newItemOut->information = $request->information;
@@ -141,7 +142,7 @@ class ItemsOutController extends Controller
 
 			$newItemOut = new item_out();
 			$newItemOut->project_id = $request->project_id;
-			$newItemOut->item_mapping_id = $item_mapping->id;
+			$newItemOut->item_mapping_id = $item_mapping->item_mapping_id;
 			$newItemOut->qty = $request->qty;
 			if($request->information != NULL) {
 				$newItemOut->information = $request->information;
