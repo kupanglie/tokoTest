@@ -193,16 +193,23 @@ Bravo Bangunan
 														Support Item
 													</td>
 												</tr>
-												<tr>
-													<td></td>
-													<td colspan="4">
-														<a href="#">
-															<div class="addSupportItem">
-																<span class="fa fa-plus"></span> Add Support Items
-															</div>
-														</a>
-													</td>
-												</tr>
+												@foreach($support_items as $support_item)
+													<tr>
+														<td>
+															<a href="{{ route('support-items.edit', $support_item->id) }}">
+																<span class="fa fa-pencil"></span>
+															</a>
+														</td>
+														<td>{{ $support_item->name }}</td>
+														<td>
+															{{ $support_item->qty }}
+														</td>
+														<td>Rp {{ $support_item->price }}</td>
+														<td>
+															Rp {{ $support_item->qty * $support_item->price }}
+														</td>
+													</tr>
+												@endforeach
 												<input type="hidden" name="row_count_support" id="row_count_support" value="0">
 												<tr class="extra_cost">
 													<td style="width:10px; text-align:center;">
@@ -245,91 +252,3 @@ Bravo Bangunan
 	</div>
 </div>
 @endsection
-
-@section('custom-js')
-<script>
-	function countTotalSupportPrice(id) {
-		var totalPrice = $('#support_qty'+id).val() * $('#support_price'+id).val();
-		$('#support_total_price'+id).text('Rp '+totalPrice);
-	}
-
-	function countTotalExtraPrice(id) {
-		var totalPrice = $('#extra_qty'+id).val() * $('#extra_price'+id).val();
-		$('#extra_total_price'+id).text('Rp '+totalPrice);
-	}
-
-	$(".addSupportItem").on('click',function(){
-		var row_cntr_support = $("#row_count_support").val();
-		row_cntr_support = parseInt(row_cntr_support) + 1;
-		var data = 
-		'<tr class="item_estimated_row'+row_cntr_support+'">'+
-		'<td></td>'+
-		'<td colspan="4">'+
-		'{{ Form::open(["route" => ["update-support-item"], "method"=> "POST", "enctype"=> "multipart/form-data"]) }}'+
-		'<div class="col-md-2">'+
-		'<input type="text" placeholder="Support Item Name" name="support_item_name"></input>'+
-		'</div>'+
-		'<div class="col-md-2">'+
-		'<input type="number" id="support_qty'+row_cntr_support+'" placeholder="Total Item" name="support_item_qty"></input>'+
-		'</div>'+
-		'<div class="col-md-2">'+
-		'<input type="number" id="support_price'+row_cntr_support+'" placeholder="Item Price" name="support_item_price" onchange="countTotalSupportPrice('+row_cntr_support+')"></input>'+
-		'</div>'+
-		'<div class="col-md-3" id="support_total_price'+row_cntr_support+'">'+
-		'</div>'+
-		'<div class="col-md-3 pull-right">'+
-		'<button type="submit">Submit</button>'+
-		'</div>'+
-		'{{ Form::close() }}'+
-		'</td>'+
-		'</tr>';
-		$('.support_items').after(data);
-		$("#row_count_support").val(row_cntr_support);
-	});
-
-	function deleteRowEstimated(ar)
-	{
-		var ttt = ar;
-		$(".item_estimated_row"+ttt+"").remove(".item_estimated_row"+ttt+"");
-		var i=Number($('#row_count_estimated').val());
-		i=i-1;
-		$('#row_count_estimated').val(i);
-	}
-
-	$(".addExtraCost").on('click',function(){
-		var row_cntr_extra = $("#row_count_extra").val();
-		row_cntr_extra = parseInt(row_cntr_extra) + 1;
-		var data = 
-		'<tr class="item_estimated_row'+row_cntr_extra+'">'+
-		'<td></td>'+
-		'<td>'+
-		'<input type="text" placeholder="Extra Cost Name" name="extra_cost_name[]"></input>'+
-		'</td>'+
-		'<td>'+
-		'<input type="number" id="extra_qty'+row_cntr_extra+'" placeholder="Total Item" name="extra_cost_qty[]"></input>'+
-		'</td>'+
-		'<td>'+
-		'<input type="number" id="extra_price'+row_cntr_extra+'" placeholder="Item Price" name="extra_cost_price[]" onchange="countTotalExtraPrice('+row_cntr_extra+')"></input>'+
-		'</td>'+
-		'<td>'+
-		'<div class="col col-md-6" id="extra_total_price'+row_cntr_extra+'">'+
-		'</div>'+
-		'<div class="col col-md-6 pull-right">'+
-		// '<button type="submit">Submit</button>'+
-		'</div>'+
-		'</td>'+
-		'</tr>';
-		$('.extra_cost').after(data);
-		$("#row_count_extra").val(row_cntr_extra);
-	});
-
-	function deleteRowEstimated(ar)
-	{
-		var ttt = ar;
-		$(".item_estimated_row"+ttt+"").remove(".item_estimated_row"+ttt+"");
-		var i=Number($('#row_count_estimated').val());
-		i=i-1;
-		$('#row_count_estimated').val(i);
-	}
-</script>
-@endsection()

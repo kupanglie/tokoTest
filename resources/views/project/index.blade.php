@@ -51,6 +51,12 @@ Bravo Bangunan
 										<a href="{{ route('items-in.create') }}">
 											<button type="button" class="btn btn-primary btn-xs">Add Items Return</button>
 										</a>
+										<a href="{{ route('support-items.create') }}">
+											<button type="button" class="btn btn-primary btn-xs">Add Support Items</button>
+										</a>
+										<a href="{{ route('support-items.create') }}">
+											<button type="button" class="btn btn-primary btn-xs">Add Extra Cost</button>
+										</a>
 									@else
 										<a href="{{ route('projects.edit', $project->project_id) }}">
 											<button type="button" class="btn btn-primary btn-xs">Opname</button>

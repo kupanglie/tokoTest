@@ -186,8 +186,13 @@ class ProjectsController extends Controller
 				}
 			}
 		}
+
+		$support_items = DB::table('support_items')
+							->where('support_items.project_id', $id)
+							->get();
+
 		// dd($items_out, $items_in, $items_used);
-        return view('project.show', compact('project', 'estimated_works', 'real_works', 'items_out', 'items_in', 'total_estimated_work_qty', 'total_estimated_work_qty_run', 'total_real_work_qty', 'total_real_work_qty_run', 'total_items_used', 'items_used'));
+        return view('project.show', compact('project', 'estimated_works', 'real_works', 'items_out', 'items_in', 'total_estimated_work_qty', 'total_estimated_work_qty_run', 'total_real_work_qty', 'total_real_work_qty_run', 'total_items_used', 'items_used', 'support_items'));
     }
 
     /**
@@ -303,10 +308,5 @@ class ProjectsController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function postUpdateSupportItem(Request $request)
-    {
-    	dd($request);
     }
 }
