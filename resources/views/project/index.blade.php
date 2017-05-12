@@ -20,6 +20,7 @@ Bravo Bangunan
 							<th>Category</th>
 							<th>Status</th>
 							<th>Start Work</th>
+							<th>Remaining Payment</th>
 							<th>Opname Status</th>
 							<th>Action</th>
 						</tr>
@@ -31,6 +32,7 @@ Bravo Bangunan
 								<td>{{ $project->category_desc }}</td>
 								<td>{{ $project->status_desc }}</td>
 								<td>{{ $project->start_working == NULL ? 'Not Yet Started' : $project->start_working }}</td>
+								<td>{{ $project->payment_value == NULL ? 'Not Specified' : $project->payment_value }}</td>
 								<td>{{ $project->opname_is == NULL ? 'Not Yet Opnamed' : 'Already Opnamed' }}</td>
 								<td style="width:10%">
 									<div class="col col-lg-1" style="padding-left:0">
@@ -54,12 +56,12 @@ Bravo Bangunan
 										<a href="{{ route('support-items.create') }}">
 											<button type="button" class="btn btn-primary btn-xs">Add Support Items</button>
 										</a>
-										<a href="{{ route('support-items.create') }}">
+										<a href="{{ route('extra-costs.create') }}">
 											<button type="button" class="btn btn-primary btn-xs">Add Extra Cost</button>
 										</a>
 									@else
 										<a href="{{ route('projects.edit', $project->project_id) }}">
-											<button type="button" class="btn btn-primary btn-xs">Opname</button>
+											<button type="button" class="btn btn-primary btn-xs">Payment</button>
 										</a>
 									@endif
 									</div>

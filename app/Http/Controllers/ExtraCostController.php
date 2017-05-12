@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
+use App\etc_items;
 
 class ExtraCostController extends Controller
 {
@@ -23,7 +25,9 @@ class ExtraCostController extends Controller
      */
     public function create()
     {
-        //
+        $projects = DB::table('projects')->get();
+
+        return view('project.extra_cost.create', compact('projects'));
     }
 
     /**
@@ -34,7 +38,19 @@ class ExtraCostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'project_id' => 'required',
+            'price' => 'required'
+        ]);
+
+        $extra_cost = new etc_items();
+        $extra_cost->name = $request->name;
+        $extra_cost->project_id = $request->project_id;
+        $extra_cost->price = $request->price;
+        $extra_cost->save();
+
+        return redirect()->route('projects.index');
     }
 
     /**
@@ -56,7 +72,13 @@ class ExtraCostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $extra_cost = DB::table('etc_items')
+                            ->where('etc_items.id', $id)
+                            ->first();
+
+        $projects = DB::table('projects')->get();
+                            
+        return view('project.extra_cost.edit', compact('extra_cost', 'projects'));  
     }
 
     /**
@@ -68,7 +90,19 @@ class ExtraCostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'project_id' => 'required',
+            'price' => 'required'
+        ]);
+
+        $extra_cost = etc_items::find($id);
+        $extra_cost->name = $request->name;
+        $extra_cost->project_id = $request->project_id;
+        $extra_cost->price = $request->price;
+        $extra_cost->save();
+
+        return redirect()->route('projects.index');
     }
 
     /**

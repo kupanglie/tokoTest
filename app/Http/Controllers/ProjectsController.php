@@ -191,8 +191,12 @@ class ProjectsController extends Controller
 							->where('support_items.project_id', $id)
 							->get();
 
+		$extra_costs = DB::table('etc_items')
+							->where('etc_items.project_id', $id)
+							->get();
+
 		// dd($items_out, $items_in, $items_used);
-        return view('project.show', compact('project', 'estimated_works', 'real_works', 'items_out', 'items_in', 'total_estimated_work_qty', 'total_estimated_work_qty_run', 'total_real_work_qty', 'total_real_work_qty_run', 'total_items_used', 'items_used', 'support_items'));
+        return view('project.show', compact('project', 'estimated_works', 'real_works', 'items_out', 'items_in', 'total_estimated_work_qty', 'total_estimated_work_qty_run', 'total_real_work_qty', 'total_real_work_qty_run', 'total_items_used', 'items_used', 'support_items', 'extra_costs'));
     }
 
     /**
@@ -274,6 +278,12 @@ class ProjectsController extends Controller
 		$end_working_date = strtotime("+".$request->work_plan." days", strtotime($request->start_working));
 		$newProject->end_working = date("Y-m-d", $end_working_date);
 		$newProject->start_nego = date('Y-m-d');
+		if($request->status_project == 4) {
+			$newProject->payment_value = $request->total_income;
+			$newProject->cost_value = $request->total_cost;
+			$newProject->profit = $request->profit;
+			$newProject->omset_sales = $request->omset_sales;
+		}
 		$newProject->save();
 
 		$old_estimated_work = estimated_work_mapping::where('project_id', $id)->delete();

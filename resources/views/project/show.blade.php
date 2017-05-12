@@ -122,6 +122,10 @@ Bravo Bangunan
 										</div>
 									</div>
 									<div class="tab-pane" id="tab-3">
+										<?php 
+											$total_cost = 0;
+											$total_income = 0;
+										?>
 										<table class="table table-bordered">
 											<thead>
 												<tr>
@@ -153,12 +157,14 @@ Bravo Bangunan
 														@endif
 														meter
 													</td>
-													<td>Rp {{ $item_used->buy_price }}</td>
+													<td>Rp {{ number_format($item_used->buy_price,0,',','.') }}</td>
 													<td>
 														@if(substr($item_used->name, 0, 3) == 'UP-' || substr($item_used->name, 0, 3) == 'LU-' || substr($item_used->name, 0, 3) == 'LK-' || substr($item_used->name, 0, 3) == 'LH-' || substr($item_used->name, 0, 3) == 'LJ-')
-															Rp {{ ($item_used->item_qty * 5.8) * ($item_used->buy_price/5.8) }}
+															Rp {{ number_format(($item_used->item_qty * 5.8) * ($item_used->buy_price/5.8),0,',','.') }}
+															<?php $total_cost = $total_cost + ($item_used->item_qty * 5.8) * ($item_used->buy_price/5.8) ?>
 														@else
-															Rp {{ $item_used->item_qty * $item_used->buy_price }}
+															Rp {{ number_format(($item_used->item_qty * $item_used->buy_price),2,',','.') }}
+															<?php $total_cost = $total_cost + $item_used->item_qty * $item_used->buy_price ?>
 														@endif
 													</td>
 												</tr>
@@ -179,9 +185,10 @@ Bravo Bangunan
 															{{ $real_work->qty }}
 															m<sup>2</sup>
 														</td>
-														<td>Rp {{ $real_work->price }}</td>
+														<td>Rp {{ number_format($item_used->buy_price,0,',','.') }}</td>
 														<td>
-															Rp {{ $real_work->qty * $real_work->price }}
+															Rp {{ number_format($real_work->qty * $real_work->price,0,',','.') }}
+															<?php $total_income = $total_income + $real_work->qty * $real_work->price ?>
 														</td>
 													</tr>
 												@endforeach
@@ -204,13 +211,13 @@ Bravo Bangunan
 														<td>
 															{{ $support_item->qty }}
 														</td>
-														<td>Rp {{ $support_item->price }}</td>
+														<td>Rp {{ number_format($support_item->price,0,',','.') }}</td>
 														<td>
-															Rp {{ $support_item->qty * $support_item->price }}
+															Rp {{ number_format($support_item->qty * $support_item->price,0,',','.') }}
+															<?php $total_income = $total_income + $support_item->qty * $support_item->price ?>
 														</td>
 													</tr>
 												@endforeach
-												<input type="hidden" name="row_count_support" id="row_count_support" value="0">
 												<tr class="extra_cost">
 													<td style="width:10px; text-align:center;">
 														4
@@ -219,17 +226,44 @@ Bravo Bangunan
 														Extra Cost
 													</td>
 												</tr>
+												@foreach($extra_costs as $extra_cost)
+													<tr>
+														<td>
+															<a href="{{ route('extra-costs.edit', $support_item->id) }}">
+																<span class="fa fa-pencil"></span>
+															</a>
+														</td>
+														<td>{{ $extra_cost->name }}</td>
+														<td>
+															1
+														</td>
+														<td>Rp {{ number_format($extra_cost->price,0,',','.') }}</td>
+														<td>
+															Rp {{ number_format(1 * $extra_cost->price,0,',','.') }}
+															<?php $total_cost = $total_cost + 1 * $extra_cost->price ?>
+														</td>
+													</tr>
+												@endforeach
 												<tr>
-													<td></td>
-													<td colspan="4">
-														<a href="#">
-															<div class="addExtraCost">
-																<span class="fa fa-plus"></span> Add Extra Items
-															</div>
-														</a>
-													</td>
+													<td colspan="4" style="text-align: right">Total Cost</td>
+													<td id="total_cost">Rp {{ number_format($total_cost,0,',','.') }}</td>
+													<input type="hidden" name="total_cost" value="{{ $total_cost }}"></input>
 												</tr>
-												<input type="hidden" name="row_count_extra" id="row_count_extra" value="0">
+												<tr>
+													<td colspan="4" style="text-align: right">Omset Sales</td>
+													<td id="total_cost">Rp {{ number_format($total_income * 3 / 100,0,',','.') }}</td>
+													<input type="hidden" name="omset_sales" value="{{ $total_income * 3 / 100 }}">
+												</tr>
+												<tr>
+													<td colspan="4" style="text-align: right">Total Income</td>
+													<td id="total_cost">Rp {{ number_format($total_income,0,',','.') }}</td>
+													<input type="hidden" name="total_income" value="{{ $total_income }}">
+												</tr>
+												<tr>
+													<td colspan="4" style="text-align: right">Profit</td>
+													<td id="total_cost">{{ round($total_income / ($total_cost + ($total_income * 3 / 100)) * 100) }} %</td>
+													<input type="hidden" name="profit" value="{{ $total_income / $total_cost }}">
+												</tr>
 											</tbody>
 										</table>
 									</div>
