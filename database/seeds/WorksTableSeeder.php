@@ -15,8 +15,16 @@ class WorksTableSeeder extends Seeder
 		$works = array (
 			array(
 				'id' => '1',
-				'name' => 'Pekerjaan plafon flat putih',
+				'name' => 'Pekerjaan plafon flat putih tinggi kurang dari 6 meter',
 				'price' => '200000',
+				'worker_cost' => '30000',
+				'created_at' => date('Y-m-d')
+			),
+			array(
+				'id' => '2',
+				'name' => 'Pekerjaan plafon flat putih tinggi lebih dari 6 meter',
+				'price' => '200000',
+				'worker_cost' => '45000',
 				'created_at' => date('Y-m-d')
 			),
 			array(

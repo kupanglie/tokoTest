@@ -26,7 +26,6 @@ Bravo Bangunan
 						</tr>
 					</thead>
 					<tbody>
-
 						@foreach($item_mappings as $item_mapping)
 							<tr>
 								<td>{{ $item_mapping->name }}</td>

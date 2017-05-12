@@ -185,7 +185,7 @@ Bravo Bangunan
 															{{ $real_work->qty }}
 															m<sup>2</sup>
 														</td>
-														<td>Rp {{ number_format($item_used->buy_price,0,',','.') }}</td>
+														<td>Rp {{ number_format($real_work->price,0,',','.') }}</td>
 														<td>
 															Rp {{ number_format($real_work->qty * $real_work->price,0,',','.') }}
 															<?php $total_income = $total_income + $real_work->qty * $real_work->price ?>

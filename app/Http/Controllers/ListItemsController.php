@@ -24,7 +24,7 @@ class ListItemsController extends Controller
 		->join('opnames', 'opnames.item_mapping_id', '=', 'item_mappings.id')
 		->select('stocks.*', 'item_mappings.id as item_mapping_id', 'item_mappings.item_id', 'item_mappings.stock_id', 'items.*', 'lengths.*', 'thicks.*', 'opnames.qty as opname_qty', 'opnames.is_opname')
 		->get();
-
+        
         return view('stock_management.list_items.index', compact('item_mappings'));
     }
 
