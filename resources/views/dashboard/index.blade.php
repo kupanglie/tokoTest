@@ -5,6 +5,9 @@ Bravo Bangunan
 @endsection
 
 @section('content')
+<a href="{{ route('payments.index') }}">
+	<button>dfdgfd</button>
+</a>
 <div class="row">
 	<div class="col-lg-3">
 		<div class="ibox float-e-margins">

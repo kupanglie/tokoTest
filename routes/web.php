@@ -24,6 +24,8 @@ Route::get('/getQuantity', 'ItemsOutController@getQuantity');
 Route::resource('projects', 'ProjectsController');
 Route::resource('support-items', 'SupportItemController');
 Route::resource('extra-costs', 'ExtraCostController');
+Route::post('opname_project', 'ProjectsController@postOpnameProject')->name('opname-project');
+Route::resource('payments', 'PaymentsController');
 
 //Stock Management
 Route::resource('list-items', 'ListItemsController');

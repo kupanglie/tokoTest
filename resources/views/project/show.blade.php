@@ -21,6 +21,11 @@ Bravo Bangunan
 										<li class="active"><a href="#tab-1" data-toggle="tab">Works</a></li>
 										<li class=""><a href="#tab-2" data-toggle="tab">Items In/Out</a></li>
 										<li class=""><a href="#tab-3" data-toggle="tab">Profit Analize</a></li>
+										@if($project->status_id == 4)
+											@if($project->opname_is == 1)
+												<li class=""><a href="#tab-4" data-toggle="tab">Payments</a></li>
+											@endif
+										@endif		
 									</ul>
 								</div>
 							</div>
@@ -125,6 +130,8 @@ Bravo Bangunan
 										<?php 
 											$total_cost = 0;
 											$total_income = 0;
+											$omset_sales = 0;
+											$profit = 0;
 										?>
 										<table class="table table-bordered">
 											<thead>
@@ -185,10 +192,13 @@ Bravo Bangunan
 															{{ $real_work->qty }}
 															m<sup>2</sup>
 														</td>
-														<td>Rp {{ number_format($real_work->price,0,',','.') }}</td>
+														<td>Rp {{ number_format($real_work->worker_cost,0,',','.') }}</td>
 														<td>
-															Rp {{ number_format($real_work->qty * $real_work->price,0,',','.') }}
-															<?php $total_income = $total_income + $real_work->qty * $real_work->price ?>
+															Rp {{ number_format($real_work->qty * $real_work->worker_cost,0,',','.') }}
+															<?php 
+																$total_cost = $total_cost + $real_work->qty * $real_work->worker_cost;
+																$total_income = $total_income + $real_work->qty * $real_work->price
+															 ?>
 														</td>
 													</tr>
 												@endforeach
@@ -214,7 +224,7 @@ Bravo Bangunan
 														<td>Rp {{ number_format($support_item->price,0,',','.') }}</td>
 														<td>
 															Rp {{ number_format($support_item->qty * $support_item->price,0,',','.') }}
-															<?php $total_income = $total_income + $support_item->qty * $support_item->price ?>
+															<?php $total_cost = $total_cost + $support_item->qty * $support_item->price ?>
 														</td>
 													</tr>
 												@endforeach
@@ -247,26 +257,63 @@ Bravo Bangunan
 												<tr>
 													<td colspan="4" style="text-align: right">Total Cost</td>
 													<td id="total_cost">Rp {{ number_format($total_cost,0,',','.') }}</td>
-													<input type="hidden" name="total_cost" value="{{ $total_cost }}"></input>
 												</tr>
 												<tr>
 													<td colspan="4" style="text-align: right">Omset Sales</td>
-													<td id="total_cost">Rp {{ number_format($total_income * 3 / 100,0,',','.') }}</td>
-													<input type="hidden" name="omset_sales" value="{{ $total_income * 3 / 100 }}">
+													<?php 
+														$omset_sales = $total_income * 3 / 100;
+													?>
+													<td id="total_cost">Rp {{ number_format($omset_sales,0,',','.') }}</td>
 												</tr>
 												<tr>
 													<td colspan="4" style="text-align: right">Total Income</td>
 													<td id="total_cost">Rp {{ number_format($total_income,0,',','.') }}</td>
-													<input type="hidden" name="total_income" value="{{ $total_income }}">
 												</tr>
 												<tr>
 													<td colspan="4" style="text-align: right">Profit</td>
-													<td id="total_cost">{{ round($total_income / ($total_cost + ($total_income * 3 / 100)) * 100) }} %</td>
-													<input type="hidden" name="profit" value="{{ $total_income / $total_cost }}">
+													<?php 
+														$profit = $total_income / ($total_cost + $omset_sales) * 100;
+													?>
+													<td id="total_cost">{{ round($profit) }} %</td>
 												</tr>
 											</tbody>
 										</table>
 									</div>
+									@if($project->status_id == 4)
+										@if($project->opname_is == 1)
+											<div class="tab-pane" id="tab-4">
+												<?php $amount_payed = 0 ?>
+												@foreach($payments as $payment)
+													<?php 
+														$amount_payed = $amount_payed + $payment->payment_value; 
+													?>
+												@endforeach
+												<h3>Payment Remaining : Rp {{ number_format($project->payment_value - $amount_payed,0,',','.') }}</h3>
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th>Date</th>
+															<th>Payment Amount</th>
+															<th>Payer</th>
+															<th>Reciever</th>
+														</tr>
+													</thead>
+													<tbody>
+														@foreach($payments as $payment)
+															<tr>
+																<td>
+																	{{ date('d M Y', strtotime($payment->updated_at)) }}
+																</td>
+																<td>Rp {{ number_format($payment->payment_value,0,',','.') }}</td>
+																<td>{{ $payment->payer_name }}</td>
+																<td>{{ $payment->reciever_name }}</td>
+															</tr>
+														@endforeach
+													</tbody>
+												</table>
+											</div>
+										@endif
+									@endif	
 								</div>
 							</div>
 						</div>
@@ -274,13 +321,22 @@ Bravo Bangunan
 				</div>
 			</div>
 			@if($project->status_id == 4)
-				<div class="ibox-footer">
-					<div class="row">
-						<div class="col-lg-offset-5 col-lg-4">
-							<button class="btn btn-primary" type="submit">Opname Now</button>
+				@if($project->opname_is != 1)
+					<div class="ibox-footer">
+						<div class="row">
+							<div class="col-lg-offset-5 col-lg-4">
+								{{ Form::open(['route' => ['opname-project', $project->id], 'method'=> 'POST', 'enctype'=> 'multipart/form-data', 'class'=>'form-horizontal']) }}
+									<input type="hidden" name="project_id" value="{{ $project->id }}"></input>
+									<input type="hidden" name="payment_value" value="{{ $total_income }}"></input>
+									<input type="hidden" name="cost_value" value="{{ $total_cost + $omset_sales }}"></input>
+									<input type="hidden" name="profit" value="{{ $total_income - $total_cost - $omset_sales }}"></input>
+									<input type="hidden" name="omset_sales" value="{{ $omset_sales }}"></input>
+									<button class="btn btn-primary" type="submit">Opname Now</button>
+								{{ Form::close() }}
+							</div>
 						</div>
 					</div>
-				</div>
+				@endif
 			@endif
 		</div>
 	</div>

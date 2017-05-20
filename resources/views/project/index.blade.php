@@ -32,7 +32,21 @@ Bravo Bangunan
 								<td>{{ $project->category_desc }}</td>
 								<td>{{ $project->status_desc }}</td>
 								<td>{{ $project->start_working == NULL ? 'Not Yet Started' : $project->start_working }}</td>
-								<td>{{ $project->payment_value == NULL ? 'Not Specified' : $project->payment_value }}</td>
+								<td>
+									@if($project->payment_value == NULL)
+										Not Specified
+									@else
+										<?php $amount_payed = 0 ?>
+										@foreach($payments as $payment)
+											@if($payment->project_id == $project->project_id)
+												<?php 
+													$amount_payed = $amount_payed + $payment->payment_value; 
+												?>
+											@endif
+										@endforeach
+										{{'Rp '. number_format($project->payment_value - $amount_payed,0,',','.')}}
+									@endif	
+								</td>
 								<td>{{ $project->opname_is == NULL ? 'Not Yet Opnamed' : 'Already Opnamed' }}</td>
 								<td style="width:10%">
 									<div class="col col-lg-1" style="padding-left:0">
@@ -60,9 +74,11 @@ Bravo Bangunan
 											<button type="button" class="btn btn-primary btn-xs">Add Extra Cost</button>
 										</a>
 									@else
-										<a href="{{ route('projects.edit', $project->project_id) }}">
-											<button type="button" class="btn btn-primary btn-xs">Payment</button>
-										</a>
+										@if($project->opname_is != 0)
+											<a href="{{ route('payments.create') }}">
+												<button type="button" class="btn btn-primary btn-xs">Payment</button>
+											</a>
+										@endif
 									@endif
 									</div>
 								</td>
